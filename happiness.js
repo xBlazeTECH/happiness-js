@@ -1,3 +1,7 @@
+// Import Settings
+var extGenConf = require('./conf/general')
+
+
 // Settings:
 var listenIP = '127.0.0.1';
 var listenPort = 80;
