@@ -1,0 +1,4 @@
+#!/bin/bash
+echo "Please Type the Name of the File"
+read filename
+/usr/bin/node $filename + '.js'
