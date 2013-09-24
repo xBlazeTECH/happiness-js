@@ -1,20 +1,49 @@
-// Import Settings
-var extGenConf = require('./conf/general')
+// Define Requires
+var fs = require('fs');
+var http = require('http');
+var qs = require('querystring');
+var request = require('request');
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://localhost/content');
+
+// Configuration Stuff
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function callback () {
+  // yay!
+});
+
 
 
 // Settings:
 var listenIP = '127.0.0.1';
-var listenPort = 80;
-var pageTitle = 'Page Title';
+var listenPort = 2232;
+/*
+var pageTitle = out.title;
+var pageHeader = out.header;
+var pageContent = out.content;
+*/
 
-
-var http = require('http');
 http.createServer(function (req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html'});
-  res.write('<html><head><title>' + pageTitle + '</title></head>');
-  res.write('<body>');
-  res.write('<h1>' + pageTitle + '</h1>');
-  res.write('<p>What can I do with Node.js?</p>\n');
-  res.end('</body></html>');
+   var request = __dirname + '/node/page/homepage.json';
+   fs.readFile(request, 'utf8', function (err, data) {
+      if (err) {
+         console.log('**ERROR: There was an error while loading homepage content!\n' + err);
+         return;
+      }
+      info = null;
+      info = JSON.parse(data);
+      console.log('Homepage Loaded Sucessfully with');
+      console.dir(info);
+      processNode();
+   });
+  function processNode() {
+     res.writeHead(200, {'Content-Type': 'text/html'});
+     res.write('<html><head><title>' + info.data + '</title></head>');
+     res.write('<body>');
+     res.write('<h1>' + info.header + '</h1>');
+     res.write(info.content);
+     res.end('</body></html>');
+  }
 }).listen(listenPort, listenIP);
 console.log('Server running at http://' + listenIP + ':' + listenPort + '/');
