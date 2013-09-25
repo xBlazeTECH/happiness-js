@@ -2,30 +2,19 @@
 var fs = require('fs');
 var http = require('http');
 var qs = require('querystring');
-var request = require('request');
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/content');
 
 // Configuration Stuff
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function callback () {
-  // yay!
-});
+var listenIP = '0.0.0.0';
+var listenPort = 12345;
 
-
-
-// Settings:
-var listenIP = '127.0.0.1';
-var listenPort = 2232;
-/*
+/* Depreciated (Replaced by Individual Pages.)
 var pageTitle = out.title;
 var pageHeader = out.header;
 var pageContent = out.content;
 */
 
 http.createServer(function (req, res) {
-   var request = __dirname + '/node/page/homepage.json';
+   var request = __dirname + '/content/page/homepage.json';
    fs.readFile(request, 'utf8', function (err, data) {
       if (err) {
          console.log('**ERROR: There was an error while loading homepage content!\n' + err);
