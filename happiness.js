@@ -1,38 +1,43 @@
-// Define Requires
+// Make sure that we have everything we need!
+var express = require('express');
+var connect = require('connect');
 var fs = require('fs');
-var http = require('http');
 var qs = require('querystring');
 
-// Configuration Stuff
-var listenIP = '0.0.0.0';
-var listenPort = 12345;
+// Set Up Express Application!
+var app = express();
+app.use(connect.bodyParser());
+app.use(express.cookieParser());
+app.use(express.session({secret: "alphaalpha"}));
 
-/* Depreciated (Replaced by Individual Pages.)
-var pageTitle = out.title;
-var pageHeader = out.header;
-var pageContent = out.content;
-*/
+// What to get...
 
-http.createServer(function (req, res) {
-   var request = __dirname + '/content/page/homepage.json';
-   fs.readFile(request, 'utf8', function (err, data) {
-      if (err) {
-         console.log('**ERROR: There was an error while loading homepage content!\n' + err);
-         return;
-      }
-      info = null;
-      info = JSON.parse(data);
-      console.log('Homepage Loaded Sucessfully with');
-      console.dir(info);
-      processNode();
-   });
-  function processNode() {
-     res.writeHead(200, {'Content-Type': 'text/html'});
-     res.write('<html><head><title>' + info.data + '</title></head>');
-     res.write('<body>');
-     res.write('<h1>' + info.header + '</h1>');
-     res.write(info.content);
-     res.end('</body></html>');
+app.get('/', function(req, res){
+  var path = '/';
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  
+  // Print out the  Homepage!
+  var array = fs.readFileSync(__dirname + '/system/content/blocks/header.html').toString().split("\n");
+  for(i in array) {
+      res.write(array[i]);
   }
-}).listen(listenPort, listenIP);
-console.log('Server running at http://' + listenIP + ':' + listenPort + '/');
+
+  // Print out the Main Menu!
+  var array = fs.readFileSync(__dirname + '/system/content/blocks/mainmenu.html').toString().split("\n");
+  for(i in array) {
+    res.write(array[i]);
+    console.log(array[i]);
+  }
+
+
+  // Print out the content!
+  var array = fs.readFileSync(__dirname + '/system/content/pages/homepage.html').toString().split("\n");
+    for(i in array) {
+        res.write(array[i]);
+    }
+  res.write('this is the homepage');
+  res.end('</body></html>');
+});
+
+app.listen(3000);
+console.log('Listening on port 3000');

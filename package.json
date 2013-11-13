@@ -1,13 +1,14 @@
 {
-  "name": "application-name",
+  "name": "happiness.js",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "scripts": {
-    "start": "node app.js"
+    "init": "node happiness.js"
   },
   "dependencies": {
     "express": "3.4.2",
-    "jade": "*",
-    "stylus": "*"
+    "connect": "*",
+    "stylus": "*",
+    "socket.io": "*"
   }
 }
