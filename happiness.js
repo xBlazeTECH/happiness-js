@@ -10,8 +10,23 @@ app.use(connect.bodyParser());
 app.use(express.cookieParser());
 app.use(express.session({secret: "alphaalpha"}));
 
-// What to get...
+// What should the user get?
 
+
+
+
+app.get('*', routeRoot);
+
+
+function routeRoot(req, res) {
+  var path = '/';
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.write("");
+  
+  res.end('</body></html>');
+}
+
+/*
 app.get('/', function(req, res){
   var path = '/';
   res.writeHead(200, {'Content-Type': 'text/html'});
@@ -23,21 +38,19 @@ app.get('/', function(req, res){
   }
 
   // Print out the Main Menu!
-  var array = fs.readFileSync(__dirname + '/system/content/blocks/mainmenu.html').toString().split("\n");
+  var array = fs.readFileSync(__dirname + '/system/content/blocks/mainmenu.html').toString().split("<!--");
   for(i in array) {
     res.write(array[i]);
     console.log(array[i]);
   }
 
-
   // Print out the content!
   var array = fs.readFileSync(__dirname + '/system/content/pages/homepage.html').toString().split("\n");
-    for(i in array) {
-        res.write(array[i]);
-    }
-  res.write('this is the homepage');
+  for(i in array) {
+    res.write(array[i]);
+  }
   res.end('</body></html>');
 });
-
+*/
 app.listen(3000);
 console.log('Listening on port 3000');
